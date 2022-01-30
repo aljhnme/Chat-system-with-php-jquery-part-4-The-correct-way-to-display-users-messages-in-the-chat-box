@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+  <link rel="stylesheet" type="text/css" href="register.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <input type="radio" name="tab" id="signin" checked="checked"/>
+  <input type="radio" name="tab" id="register"/> 
+  <span id="alert" style="text-align:center;">
+  </span>
+  <div class="pages">
+   <div class="page">
+      <div class="input">
+        <div class="title">Username</div>
+        <input class="text" type="text" id="Username_l" />
+      </div>
+      <div class="input">
+        <div class="title">Password</div>
+        <input class="text" type="password" id="password_l" />
+      </div>
+      <div class="input">
+        <input type="submit" value="Login" class="lo_re" id="log" />
+      </div>
+    </div>
+
+    <div class="page signup">
+      <div class="input">
+        <div class="title">Username</div>
+        <input class="text" type="text" id="Username_r" />
+      </div>
+      <div class="input">
+        <div class="title">Password</div>
+        <input class="text" type="password" id="password_r" />
+      </div>
+       <div class="input">
+        <div class="title">Re-Password</div>
+        <input class="text" type="rpassword" id="cpassword" />
+      </div>
+      <div class="input">
+        <div class="title">profile picture</div>
+        <input type="file" type="picture" id="profile_picture" />
+      </div>
+      <div class="input">
+        <input type="submit" value="Register" class="lo_re" id="regi" />
+      </div>
+    </div>
+
+    </div>
+   <div class="tabs">
+   	 <label class="tab" for="signin">
+      <div class="text">Login</div>
+    </label>
+    <label class="tab" for="register">
+      <div class="text">Register</div>
+    </label>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+	$(document).on('click','.lo_re',function(){
+       
+        var ch_click=$(this).attr('id');
+        
+        var d_us=new FormData();
+
+        var location_ins;
+        var t_get_dus;
+        if (ch_click == "regi") 
+        {
+          location_ins='register_user';
+          t_get_dus='r';
+          var profile_picture=$("#profile_picture")[0].files[0];
+          d_us.append('img',profile_picture);
+        }
+        if (ch_click == "log") 
+        {
+          location_ins="check_of_user_";
+          t_get_dus='l';
+        }
+          d_us.append('location',location_ins);
+
+          var Username=$("#Username_"+t_get_dus).val();
+          d_us.append('username',Username);
+
+          var password=$("#password_"+t_get_dus).val();
+          d_us.append('password',password);
+
+          var cpassword=$("#cpassword").val();
+          d_us.append('cpassword',cpassword);
+
+          $.ajax({
+          	url:"action.php",
+            type:"post",
+            data:d_us,
+            processData:false,
+            contentType:false,
+            success:function(data)
+            {
+              $("#alert").html(data);
+              if (data == "succes_login") 
+              {
+                window.location.href="index.php";
+              }
+              
+            } 
+          });
+	     });
+</script>
+</html>
